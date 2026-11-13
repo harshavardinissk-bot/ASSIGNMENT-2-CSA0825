@@ -1,0 +1,20 @@
+def verify_while(entries,correct,limit=3):
+    it=iter(entries); attempts=0
+    while attempts<limit:
+        try: entered=next(it)
+        except StopIteration: break
+        if not entered.strip(): continue
+        attempts+=1
+        if entered==correct: print("verified"); break
+        if attempts==1: pass  # optional audit hook
+    else: print("locked for 30 minutes")
+def verify_for(entries,correct,limit=3):
+    it=iter(entries)
+    for attempt in range(limit):
+        entered=next((x for x in it if x.strip()),"") # blank entries do not consume tries
+        if not entered: break
+        if entered==correct: print("verified"); break
+    else: print("locked for 30 minutes")
+verify_while(["","123","456","999"],"999")
+verify_for(["","123","456","999"],"999")
+verify_while(["1","2","3"],"999")
