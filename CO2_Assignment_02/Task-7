@@ -1,0 +1,14 @@
+from functools import lru_cache
+@lru_cache(None)
+def ways_memo(n):
+    if n<=1: return 1
+    return ways_memo(n-1)+ways_memo(n-2)
+def stairs_loop(n):
+    if n<0: raise ValueError("n must be non-negative")
+    previous,current=1,1
+    for _ in range(2,n+1): previous,current=current,previous+current
+    return current
+for n in (6,25,30,1000):
+    print(n,stairs_loop(n),len(str(stairs_loop(n))))
+# Same input validation against memoized result for small n:
+assert all(stairs_loop(n)==ways_memo(n) for n in range(31))
