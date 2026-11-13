@@ -1,0 +1,17 @@
+import time
+def build_plus(parts):
+    text=""
+    for item in parts: text+=item+";"
+    return text
+def build_join(parts): return "".join(item+";" for item in parts)
+def build_fstring(parts): return "".join(f"{item};" for item in parts)
+for n in (1000,10000,200000):
+    parts=[f"Item{i}:Rs{i%50}" for i in range(n)]
+    timings={}
+    for name,fn in (("plus",build_plus),("join",build_join),("f-string",build_fstring)):
+        samples=[]
+        for _ in range(3):
+            t=time.perf_counter(); result=fn(parts); samples.append(time.perf_counter()-t)
+        timings[name]=statistics.mean(samples)
+    assert build_plus(parts)==build_join(parts)==build_fstring(parts)
+    print(n,timings,len(result))
